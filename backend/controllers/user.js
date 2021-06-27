@@ -1,16 +1,16 @@
 const bcrypt = require('bcrypt'); // Importation du package de cryptage du mot de passe
-const jwt = require('jsonwebtoken'); //importation du package pour créer et vérifier les tokens
-const User = require('../models/user'); //importation du modèle mongoose
+const jwt = require('jsonwebtoken');
+const User = require('../models/user');
 
-// Exportation de la Fonction pour l'enregistrement de nouveaux utilisateurs
+// Fonction pour l'enregistrement de nouveaux utilisateurs
 exports.signup = (req, res, next) => {
-    bcrypt.hash(req.body.password, 10) //crypte le mot de passe
+    bcrypt.hash(req.body.password, 10)
         .then(hash => {
-            const user = new User({   //création d'un nouvel utilisateur
+            const user = new User({
                 email: req.body.email,
                 password: hash
             });
-            user.save()  //enregistre dans la BDD
+            user.save()
                 .then(() => res.status(201).json({ message: 'Utilisateur créé !' }))
                 .catch(error => res.status(400).json({ error }));
         })
@@ -18,9 +18,8 @@ exports.signup = (req, res, next) => {
 };
 
 
-// Exportation de la fonction login pour connecter les utilisateurs existants
+// Fonction login pour connecter les utilisateurs existants
 exports.login = (req, res, next) => {
-    //récupère l'utilisateur
     User.findOne({ email: req.body.email })
         .then(user => {
             if (!user) {

@@ -1,9 +1,8 @@
 const express = require('express');
 const router = express.Router();
-const userCtrl = require('../controllers/user'); //importation du controller
-const verifyPassword = require('../middleware/verifyPassword'); //importation du middleware pour vérifier le mot de passe
+const userCtrl = require('../controllers/user');
 
-router.post('/signup', verifyPassword, userCtrl.signup); //route pour enregistrer un utilisateur
-router.post('/login', userCtrl.login); //router pour connection utilisateur inscrit
+router.post('/signup', userCtrl.signup);
+router.post('/login', userCtrl.login);
 
 module.exports = router;

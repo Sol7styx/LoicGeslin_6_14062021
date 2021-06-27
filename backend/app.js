@@ -1,24 +1,35 @@
-const express = require('express'); // importation express
-const app = express(); //création d'une application express
+const express = require('express'); // Importation de express
+const bodyParser = require('body-parser'); // Importation de body-parser
+const mongoose = require('mongoose'); // Importation de mongoose pour ce connecter à notre cluster mongoDB
+const path = require('path');
 
-const mongoose = require('mongoose'); // importation mongoose
+const sauceRoutes = require('./routes/sauces');
+const userRoutes = require('./routes/user');
 
-//Se connecter à la BDD
-mongoose.connect('mongodb+srv://Sol7styx:Joshua72@clusterp06.lrpq5.mongodb.net/myFirstDatabase?retryWrites=true&w=majority',
-  { useNewUrlParser: true,
-    useUnifiedTopology: true })
-  .then(() => console.log('Connexion à MongoDB réussie !'))
-  .catch(() => console.log('Connexion à MongoDB échouée !'));
+mongoose.connect('mongodb+srv://Sol7styx:dbjoshua72@cluster0.vuqd4.mongodb.net/myFirstDatabase?retryWrites=true&w=majority',
+    {
+        useNewUrlParser: true,
+        useUnifiedTopology: true
+    })
+    .then(() => console.log('Connexion à MongoDB réussie !'))
+    .catch(() => console.log('Connexion à MongoDB échouée !'));
 
-//Middleware header pour éviter les erruers sécurité CORS, afin que tout le monde puisse faire des requêtes 
+
+const app = express(); // Création d'une application express
+
+// Ajout de headers, * tout le monde peut accéder à l'API, autorisation d'utiliser certains en-tête sur l'objet requête et certaines méthodes (get, post etc)
 app.use((req, res, next) => {
-    //les ressources peuvent être partagées depuis n'importe quelle origine
-    res.setHeader('Access-Control-Allow-Origin', '*'); 
-    //On indique les entêtes qui seront utilisées après la pré-vérification cross-origin afin de donner l'autorisation
+    res.setHeader('Access-Control-Allow-Origin', '*');
     res.setHeader('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content, Accept, Content-Type, Authorization');
-    //On indique les méthodes autorisées pour les requêtes HTTP
-    res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, PÄTCH, OPTIONS');
-    next(); 
+    res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, PATCH, OPTIONS');
+    next();
 });
 
-module.exports = app;
+app.use(bodyParser.json());// Va transformer le corps de la requête en objet JS utilisable
+
+app.use('/images', express.static(path.join(__dirname, 'images')));
+
+app.use('/api/sauces', sauceRoutes); // Importation des routes depuis le fichier sauce.js du dossier routes
+app.use('/api/auth', userRoutes); // Importation de la route depuis le fichier user.js du dossier routes
+
+module.exports = app; // Exportation de la const app pour y accèder depuis les autres fichiers.

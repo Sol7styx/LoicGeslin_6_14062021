@@ -4,13 +4,13 @@ const User = require('../models/user');
 
 // Fonction pour l'enregistrement de nouveaux utilisateurs
 exports.signup = (req, res, next) => {
-    bcrypt.hash(req.body.password, 10)
+    bcrypt.hash(req.body.password, 10)  //crypte le mot de passe
         .then(hash => {
-            const user = new User({
+            const user = new User({    //création d'un nouvel utilisateur
                 email: req.body.email,
                 password: hash
             });
-            user.save()
+            user.save()  //enregistre dans la base de données
                 .then(() => res.status(201).json({ message: 'Utilisateur créé !' }))
                 .catch(error => res.status(400).json({ error }));
         })

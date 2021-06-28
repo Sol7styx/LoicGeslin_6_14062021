@@ -1,7 +1,9 @@
-const mongoose = require('mongoose');
+//le modèle va permettre d'insérer des données dans MongoDB en respectant le schéma précisé et de faire des requêtes dessus
 
-const sauceSchema = mongoose.Schema({
-    userId: { type: String, required: true }, // on créer un modèle avec le type de champs , champs requis
+const mongoose = require('mongoose'); //importation mongoose
+
+const sauceSchema = mongoose.Schema({ 
+    userId: { type: String, required: true }, // on créer le schéma de données Sauce avec le type de champs requis
     name: { type: String, required: true },
     manufacturer: { type: String, required: true },
     description: { type: String, required: true },
@@ -14,4 +16,4 @@ const sauceSchema = mongoose.Schema({
     usersDisliked: { type: [String] },
 });
 
-module.exports = mongoose.model('sauce', sauceSchema); // Exporté le modèle ( premier argument = nom du modèle, deuxiéme argument = schém créé )
+module.exports = mongoose.model('sauce', sauceSchema); // Exporte le modèle ( premier argument = nom du modèle, deuxiéme argument = schéma créé )

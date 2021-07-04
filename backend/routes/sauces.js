@@ -2,11 +2,12 @@
 
 const express = require('express');
 const router = express.Router(); // Création d'un router via express
-
-
-const auth = require('../middleware/auth');
-const multer = require('../middleware/multer-config');
 const sauceCtrl = require('../controllers/sauces'); // Importation du contrôleur
+
+const auth = require('../middleware/auth'); //importation de la fonction pour l'authentification pour sécuriser les routes
+
+const multer = require('../middleware/multer-config'); //importation de multer configuré pour la gestion des images
+
 
 
 router.post('/', auth, multer, sauceCtrl.createSauce);

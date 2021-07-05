@@ -10,10 +10,11 @@ const mongoSanitize = require('express-mongo-sanitize'); //importation du packag
 const sauceRoutes = require('./routes/sauces');
 const userRoutes = require('./routes/user');
 
-
+const dotenv= require('dotenv');
+dotenv.config();
 
 //logique pour se connecter à la BDD
-mongoose.connect('mongodb+srv://Sol7styx:dbjoshua72@cluster0.vuqd4.mongodb.net/myFirstDatabase?retryWrites=true&w=majority',
+mongoose.connect('mongodb+srv://' + process.env.DB_USERNAME + ':' + process.env.DB_PASSWORD + '@cluster0.vuqd4.mongodb.net/myFirstDatabase?retryWrites=true&w=majority',
     {
         useNewUrlParser: true,
         useUnifiedTopology: true
